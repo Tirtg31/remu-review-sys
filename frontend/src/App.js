@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import "./styles.css";
 import TakeInput from "./components/auth/TakeInput";
-import FileUpload from "./components/fileUpload/FileUpload";
+import AdminFileUpload from "./components/fileUpload/AdminFileUpload";
 
 class App extends Component {
   render() {
     return (
       <div>
-        {/* <TakeInput /> */}
-        <FileUpload />
+        <TakeInput />
+        <AdminFileUpload />
       </div>
     );
   }
