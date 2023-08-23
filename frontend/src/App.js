@@ -1,20 +1,14 @@
-import React,{Component} from 'react';
-import "./App.css";
+import React, { Component } from "react";
 import "./styles.css";
-import TakeInput from "./takeInput";
+import TakeInput from "./components/auth/TakeInput";
 
-class App extends Component{
-render() {
-  return (
-    <div className="App" >
-      <header className="App-header" >
-        <div class="signin">
-        
-        <TakeInput/>
-        </div>
-      </header>
-    </div>
-  );
-}
+class App extends Component {
+  render() {
+    return (
+      <div>
+        <TakeInput />
+      </div>
+    );
+  }
 }
 export default App;

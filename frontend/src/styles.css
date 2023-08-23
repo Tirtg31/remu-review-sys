@@ -1,3 +1,23 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.App {
+  text-align: center;
+}
+
+.my-container {
+  background: linear-gradient(90deg, #C7C5F4, #776BCC);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
 .signin
 {
   position: absolute;
@@ -10,4 +30,17 @@
   padding: 40px;
   border-radius: 4px;
   box-shadow: 0 15px 35px rgba(0,0,0,9);
+}
+
+@media (min-width: 300px) and (max-width: 1024px) {
+  .my-container{
+    background: linear-gradient(90deg, #C7C5F4, #050319);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+  }
 }
