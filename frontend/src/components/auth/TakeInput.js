@@ -4,23 +4,23 @@ class TakeInput extends Component {
   render() {
     return (
       <header className="my-container">
-        <div class="signin">
-          <div class="row">
-            <form class="col s12">
+        <div className="signin">
+          <div className="row">
+            <form className="col s12">
               <h2>Sign in</h2>
-              <div class="input-field inline">
-                <input id="email_inline" type="email" class="validate" />
+              <div className="input-field inline">
+                <input id="email_inline" type="email" className="validate" />
                 <label for="email_inline">Email</label>
               </div>
 
-              <div class="row">
-                <div class="input-field col s12">
-                  <input id="password" type="password" class="validate" />
+              <div className="row">
+                <div className="input-field col s12">
+                  <input id="password" type="password" className="validate" />
                   <label for="password">Password</label>
                 </div>
               </div>
               <button
-                class="btn waves-effect waves-light"
+                className="btn waves-effect waves-light"
                 type="submit"
                 name="action"
               >
