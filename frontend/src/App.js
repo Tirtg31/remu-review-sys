@@ -1,14 +1,13 @@
 import React, { Component } from "react";
 import "./styles.css";
 import TakeInput from "./components/auth/TakeInput";
-import AdminFileUpload from "./components/fileUpload/AdminFileUpload";
+import ForgotPswd from "./components/auth/ForgotPswd";
 
 class App extends Component {
   render() {
     return (
       <div>
-        <TakeInput />
-        <AdminFileUpload />
+        <ForgotPswd />
       </div>
     );
   }
