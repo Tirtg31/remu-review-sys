@@ -1,23 +1,31 @@
 {
   "development": {
     "username": "root",
-    "password": null,
-    "database": "database_development",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
-  },
-  "test": {
-    "username": "root",
-    "password": null,
-    "database": "database_test",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
-  },
-  "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "password": "joy12345",
+    "database": "remuneration_app",
+    "host": "localhost",
+    "dialect": "mysql",
+    "port": 3306,
+    "serverport": 8080,
+    "accessTokenSecret": "NwqeSDI3WCYJBnn1YY5Yaq2,96y59rn8",
+    "refreshAccessTokenSecret": "truyiUIIViBubi63WPlmwaczx7f4s20l",
+    "expTime": "20m",
+    "logging": false,
+    "mailId": "zechariah.balistreri70@ethereal.email",
+    "mailPassword": "n9XZF3n7NBBQpMJeMW",
+    "smtp": {
+      "host": "smtp.ethereal.email",
+      "port": 587,
+      "tls": { "rejectUnauthorized": false },
+      "secureConnection": false
+    },
+    "admin": {
+      "name": "Admin",
+      "userName": "Admin",
+      "email": "admin@abc.com",
+      "password": "12345",
+      "role": "admin",
+      "isVerified": true
+    }
   }
 }

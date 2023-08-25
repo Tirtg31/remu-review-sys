@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { login_path } from "../../config/config";
+import { Link } from "react-router-dom";
 
 class ForgotPswd extends Component {
   constructor(props) {
@@ -34,20 +36,20 @@ class ForgotPswd extends Component {
   render() {
     const { newPassword, confirmPassword, error } = this.state;
     return (
-      <header className="my-container">
-        <div className="signin">
+      <header className="reset-password-container">
+        <div className="reset-password">
           <div className="row">
             <form className="col s12">
-              <h3>Reset Password</h3>
+              <h5>Reset Password</h5>
               <div className="input-field inline">
                 <input id="email_inline" type="email" className="validate" />
-                <label for="email_inline">Email</label>
+                <label htmlFor="email_inline">Email</label>
               </div>
 
-              <div className="row">
-                <div className="input-field col s6">
-                  <input id="icon_telephone" type="tel" className="validate" />
-                  <label for="icon_telephone">OTP</label>
+              <div class="row">
+                <div class="input-field col s12">
+                  <input id="otp" type="text" class="validate" />
+                  <label htmlFor="otp">OTP</label>
                 </div>
               </div>
 
@@ -60,19 +62,19 @@ class ForgotPswd extends Component {
                     value={newPassword}
                     onChange={(e) => this.handlePasswordChange(e, false)}
                   />
-                  <label for="password">New Password</label>
+                  <label htmlFor="password">New Password</label>
                 </div>
               </div>
               <div className="row">
                 <div className="input-field col s12">
                   <input
-                    id="password"
+                    id="confirmpassword"
                     type="password"
                     className="validate"
                     value={confirmPassword}
                     onChange={(e) => this.handlePasswordChange(e, true)}
                   />
-                  <label for="password">Confirm Password</label>
+                  <label htmlFor="confirmpassword">Confirm Password</label>
                 </div>
               </div>
               {error && <p className="error-message">{error}</p>}
@@ -84,6 +86,11 @@ class ForgotPswd extends Component {
               >
                 Reset
               </button>
+              <div className="row">
+                <div className="input-field col s12">
+                  <Link to={login_path}>Back to login</Link>
+                </div>
+              </div>
             </form>
           </div>
         </div>

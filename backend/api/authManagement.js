@@ -57,25 +57,15 @@ module.exports = (app, db) => {
                 where: { id: user.id },
               }
             );
-
-            if (nUser[0] === 1) {
-              nUA = await db.UserActivity.create({
-                login: new Date(),
-                userId: user.id,
-              });
-              res.status(200).json({
-                message: "Login Successfully",
-                data: {
-                  userDetails: token,
-                  accessToken: accessToken,
-                  refreshAccessToken: refreshAccessToken,
-                  role: user.role,
-                  subscribed: await isSubscribed(user.id),
-                },
-              });
-            } else {
-              throw new Error("Login Error");
-            }
+            res.status(200).json({
+              message: "Login Successfully",
+              data: {
+                userDetails: token,
+                accessToken: accessToken,
+                refreshAccessToken: refreshAccessToken,
+                role: user.role,
+              },
+            });
           }
         } else {
           res.status(401).json({ message: "Wrong Password" });
@@ -89,7 +79,7 @@ module.exports = (app, db) => {
     }
   });
 
-  app.post("/register", validation(registrationSchema), async (req, res) => {
+  app.post("/register", async (req, res) => {
     try {
       const oldUserEmail = await db.Users.findOne({
         where: { email: req.body.email, isActive: true, isVerified: true },
@@ -192,12 +182,6 @@ module.exports = (app, db) => {
     )
       .then((data) => {
         if (data[0] === 1) {
-          db.UserActivity.create({
-            logout: new Date(),
-            userId: req.user.id,
-          }).catch((err) => {
-            throw err;
-          });
           res.status(200).json({ message: "Logout Success" });
         } else {
           res.status(500).json({ message: "Logout Error" });
@@ -257,28 +241,23 @@ module.exports = (app, db) => {
 
   app.post("/resetPassword", async (req, res) => {
     try {
-      const whereOb = {
-        [emailOrUserName(req.body.userName)]: req.body.userName,
-        isActive: true,
-      };
       const user = await db.Users.findOne({
-        where: whereOb,
+        where: {
+          isActive: true,
+          email: req.body.email,
+        },
       });
-      console.log(whereOb);
       if (user) {
-        const otp = generateOTP(6);
-        const nUser = await db.Users.update(
-          { otp: otp },
-          { where: { id: user.id } }
-        );
-        if (nUser[0] !== 1) {
-          throw new Error("Error to update otp");
+        if (user.otp === req.body.otp) {
+          let u_user = await db.Users.update(
+            {
+              otp: null,
+            },
+            { where: { id: user.id } }
+          );
+        } else {
+          res.status(500).json({ message: "OTP doesn't match" });
         }
-        await sentMail({
-          to: user.email,
-          subject: "Password Reset Email",
-          html: getResetPasswordTemplate(user.userName, otp),
-        });
         res.status(200).json({ message: "Check your email to reset password" });
       } else {
         res.status(500).json({ message: "No such user exist" });
