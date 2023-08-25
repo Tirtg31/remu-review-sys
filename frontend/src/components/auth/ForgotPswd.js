@@ -11,7 +11,6 @@ class ForgotPswd extends Component {
   }
 
   handlePasswordChange = (event, isConfirmPassword) => {
-    const { newPassword, confirmPassword } = this.state;
     const value = event.target.value;
 
     if (isConfirmPassword) {
@@ -45,9 +44,9 @@ class ForgotPswd extends Component {
                 <label for="email_inline">Email</label>
               </div>
 
-              <div class="row">
-                <div class="input-field col s6">
-                  <input id="icon_telephone" type="tel" class="validate" />
+              <div className="row">
+                <div className="input-field col s6">
+                  <input id="icon_telephone" type="tel" className="validate" />
                   <label for="icon_telephone">OTP</label>
                 </div>
               </div>

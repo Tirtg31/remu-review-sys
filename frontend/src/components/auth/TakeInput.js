@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 class TakeInput extends Component {
   render() {
@@ -19,6 +20,12 @@ class TakeInput extends Component {
                   <label for="password">Password</label>
                 </div>
               </div>
+              <div>
+                <Link to="/ForgotPswd" className="btn btn-link">
+                  Forgot Password
+                </Link>
+              </div>
+
               <button
                 className="btn waves-effect waves-light"
                 type="submit"
@@ -33,4 +40,5 @@ class TakeInput extends Component {
     );
   }
 }
+
 export default TakeInput;
