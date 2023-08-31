@@ -253,16 +253,16 @@ module.exports = (app, db) => {
             {
               otp: null,
               isVerified: true,
-              password: req.body.password,
+              password: bcrypt.hashSync(req.body.password, 10),
             },
             { where: { id: user.id } }
           );
         } else {
-          res.status(500).json({ message: "OTP doesn't match" });
+          throw new Error("OTP doesn't match");
         }
         res.status(200).json({ message: "Check your email to reset password" });
       } else {
-        res.status(500).json({ message: "No such user exist" });
+        throw new Error("No such user exist");
       }
     } catch (err) {
       console.log(err);

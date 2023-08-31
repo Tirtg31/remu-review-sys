@@ -7,7 +7,7 @@ const authenticateJWT = (req, res, next) => {
   const authHeader = req.headers.authorization;
   console.log(req.originalUrl);
   var url = String(req.originalUrl);
-  if (req.originalUrl === "/login") {
+  if (req.originalUrl === "/login" || req.originalUrl === "/resetPassword") {
     next();
   } else if (authHeader) {
     const token = authHeader.split(" ")[1];

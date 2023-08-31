@@ -32,8 +32,7 @@ app.get("*", (req, res, next) => {
   }
 });
 app.use(authenticateJWT);
-// dbInit();
-// createAdmin();
+
 authManagement(app, db);
 fileUploadManagement(app, db);
 

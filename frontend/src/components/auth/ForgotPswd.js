@@ -10,6 +10,9 @@ import {
   LOGIN_ERROR,
   LOGIN_LOADING,
   LOGIN_SUCCESS,
+  RESET_PASSWORD_ERROR,
+  RESET_PASSWORD_LOADING,
+  RESET_PASSWORD_SUCCESS,
 } from "../../types/authTypes";
 import { setAuthreducer } from "../../action/authAction";
 import Loader from "../layouts/Loader";
@@ -19,49 +22,25 @@ import { Link, Navigate } from "react-router-dom";
 import { login_path } from "../../config/config";
 
 class ForgotPswd extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      newPassword: "",
-      confirmPassword: "",
-      error: "",
-    };
+  state = { newPassword: "", confirmPassword: "", error: "" };
+
+  componentDidUpdate() {
+    if (this.props.resetPasswordSuccess) {
+      alert(this.props.resetPasswordMessage);
+      this.props.SetAuthreducer({
+        resetPasswordSuccess: false,
+      });
+    }
+    if (this.props.resetPasswordError) {
+      alert(this.props.resetPasswordMessage);
+      this.props.SetAuthreducer({
+        resetPasswordError: false,
+      });
+    }
   }
 
-  handleResetPassword = async (event) => {
-    event.preventDefault();
-    const { email, otp, newPassword, confirmPassword } = this.state;
-
-    if (newPassword !== confirmPassword) {
-      this.setState({ error: "Passwords don't match" });
-    } else {
-      this.setState({ error: "" });
-
-      try {
-        const response = await this.props.Api_request(
-          method_post,
-          reset_password_path,
-          { email, otp, password: newPassword },
-          null,
-          LOGIN_LOADING,
-          LOGIN_SUCCESS,
-          LOGIN_ERROR
-        );
-
-        if (response.status === 200) {
-          console.log("Password reset successful:", response.data.message);
-        } else if (response.status === 404) {
-          console.log("Email not found:", response.data.message);
-        } else {
-          console.error("Password reset failed:", response.data.message);
-        }
-      } catch (error) {
-        console.error("An error occurred:", error);
-        if (error.response) {
-          console.error("Response data:", error.response.data);
-        }
-      }
-    }
+  onChange = (e) => {
+    this.setState({ [e.target.id]: e.target.value });
   };
 
   handlePasswordChange = (event, isConfirmPassword) => {
@@ -74,43 +53,36 @@ class ForgotPswd extends Component {
     }
   };
 
-  handleResetClick = async (event) => {
+  handleResetClick = (event) => {
     event.preventDefault();
-
     const { email, otp, newPassword, confirmPassword } = this.state;
-
     if (newPassword !== confirmPassword) {
       this.setState({ error: "Passwords don't match" });
     } else {
       this.setState({ error: "" });
-
-      try {
-        const response = await this.props.Api_request(
-          method_post,
-          reset_password_path,
-          { email, otp, password: newPassword },
-          null,
-          LOGIN_LOADING,
-          LOGIN_SUCCESS,
-          LOGIN_ERROR
-        );
-
-        if (response.status === 200) {
-          console.log("Password reset successful:", response.data.message);
-        } else {
-          console.error("Password reset failed:", response.data.message);
-        }
-      } catch (error) {
-        console.error("An error occurred:", error);
-        if (error.response) {
-          console.error("Response data:", error.response.data);
-        }
-      }
+      this.props.Api_request(
+        method_post,
+        "/resetPassword",
+        {
+          email: email,
+          otp: otp,
+          password: newPassword,
+        },
+        null,
+        RESET_PASSWORD_LOADING,
+        RESET_PASSWORD_SUCCESS,
+        RESET_PASSWORD_ERROR
+      );
     }
   };
 
   render() {
     const { newPassword, confirmPassword, error } = this.state;
+
+    if (this.props.resetPasswordLoading) {
+      return <Loader />;
+    }
+
     return (
       <header className="reset-password-container">
         <div className="reset-password">
@@ -118,13 +90,23 @@ class ForgotPswd extends Component {
             <form className="col s12">
               <h5>Reset Password</h5>
               <div className="input-field inline">
-                <input id="email_inline" type="email" className="validate" />
-                <label htmlFor="email_inline">Email</label>
+                <input
+                  id="email"
+                  type="email"
+                  className="validate"
+                  onChange={this.onChange}
+                />
+                <label htmlFor="email">Email</label>
               </div>
 
               <div class="row">
                 <div class="input-field col s12">
-                  <input id="otp" type="text" class="validate" />
+                  <input
+                    id="otp"
+                    type="text"
+                    className="validate"
+                    onChange={this.onChange}
+                  />
                   <label htmlFor="otp">OTP</label>
                 </div>
               </div>
@@ -174,6 +156,16 @@ class ForgotPswd extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    resetPasswordLoading: state.auth.resetPasswordLoading,
+    resetPasswordSuccess: state.auth.resetPasswordSuccess,
+    resetPasswordError: state.auth.resetPasswordError,
+    resetPasswordMessage: state.auth.resetPasswordMessage,
+  };
+};
+
 const mapDispatchToProps = (dispatch) => {
   return {
     Api_request: (
@@ -189,7 +181,10 @@ const mapDispatchToProps = (dispatch) => {
         api_request(method, path, body, query, loadType, successType, errorType)
       );
     },
+    SetAuthreducer: (data) => {
+      dispatch(setAuthreducer(data));
+    },
   };
 };
 
-export default connect(null, mapDispatchToProps)(ForgotPswd);
+export default connect(mapStateToProps, mapDispatchToProps)(ForgotPswd);
