@@ -1,6 +1,22 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { api_request } from "../../action/commonActions";
+import {
+  file_upload_path,
+  method_post,
+  reset_password_path,
+} from "../../config/config";
+import {
+  LOGIN_ERROR,
+  LOGIN_LOADING,
+  LOGIN_SUCCESS,
+} from "../../types/authTypes";
+import { setAuthreducer } from "../../action/authAction";
+import Loader from "../layouts/Loader";
+import AdminFileUpload from "../fileUpload/AdminFileUpload";
+import { Link, Navigate } from "react-router-dom";
+
 import { login_path } from "../../config/config";
-import { Link } from "react-router-dom";
 
 class ForgotPswd extends Component {
   constructor(props) {
@@ -12,6 +28,42 @@ class ForgotPswd extends Component {
     };
   }
 
+  handleResetPassword = async (event) => {
+    event.preventDefault();
+    const { email, otp, newPassword, confirmPassword } = this.state;
+
+    if (newPassword !== confirmPassword) {
+      this.setState({ error: "Passwords don't match" });
+    } else {
+      this.setState({ error: "" });
+
+      try {
+        const response = await this.props.Api_request(
+          method_post,
+          reset_password_path,
+          { email, otp, password: newPassword },
+          null,
+          LOGIN_LOADING,
+          LOGIN_SUCCESS,
+          LOGIN_ERROR
+        );
+
+        if (response.status === 200) {
+          console.log("Password reset successful:", response.data.message);
+        } else if (response.status === 404) {
+          console.log("Email not found:", response.data.message);
+        } else {
+          console.error("Password reset failed:", response.data.message);
+        }
+      } catch (error) {
+        console.error("An error occurred:", error);
+        if (error.response) {
+          console.error("Response data:", error.response.data);
+        }
+      }
+    }
+  };
+
   handlePasswordChange = (event, isConfirmPassword) => {
     const value = event.target.value;
 
@@ -22,14 +74,38 @@ class ForgotPswd extends Component {
     }
   };
 
-  handleResetClick = (event) => {
+  handleResetClick = async (event) => {
     event.preventDefault();
 
-    const { newPassword, confirmPassword } = this.state;
+    const { email, otp, newPassword, confirmPassword } = this.state;
+
     if (newPassword !== confirmPassword) {
       this.setState({ error: "Passwords don't match" });
     } else {
       this.setState({ error: "" });
+
+      try {
+        const response = await this.props.Api_request(
+          method_post,
+          reset_password_path,
+          { email, otp, password: newPassword },
+          null,
+          LOGIN_LOADING,
+          LOGIN_SUCCESS,
+          LOGIN_ERROR
+        );
+
+        if (response.status === 200) {
+          console.log("Password reset successful:", response.data.message);
+        } else {
+          console.error("Password reset failed:", response.data.message);
+        }
+      } catch (error) {
+        console.error("An error occurred:", error);
+        if (error.response) {
+          console.error("Response data:", error.response.data);
+        }
+      }
     }
   };
 
@@ -98,4 +174,22 @@ class ForgotPswd extends Component {
     );
   }
 }
-export default ForgotPswd;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    Api_request: (
+      method,
+      path,
+      body,
+      query,
+      loadType,
+      successType,
+      errorType
+    ) => {
+      return dispatch(
+        api_request(method, path, body, query, loadType, successType, errorType)
+      );
+    },
+  };
+};
+
+export default connect(null, mapDispatchToProps)(ForgotPswd);

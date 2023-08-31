@@ -1,12 +1,12 @@
 {
   "development": {
     "username": "root",
-    "password": "joy12345",
+    "password": "ghuchu55",
     "database": "remuneration_app",
     "host": "localhost",
     "dialect": "mysql",
     "port": 3306,
-    "serverport": 8080,
+    "serverport": 8081,
     "accessTokenSecret": "NwqeSDI3WCYJBnn1YY5Yaq2,96y59rn8",
     "refreshAccessTokenSecret": "truyiUIIViBubi63WPlmwaczx7f4s20l",
     "expTime": "20m",

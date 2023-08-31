@@ -9,7 +9,7 @@ const config = require("./config/config");
 const { dbInit, createDB, createAdmin } = require("./scripts/dbInit");
 const authManagement = require("./api/authManagement");
 const { authenticateJWT } = require("./utils/auth");
-const {} = require("./config/constants");
+const { running_env } = require("./config/constants");
 const fileUploadManagement = require("./api/fileUploadManagement");
 const env = process.env.NODE_ENV || running_env;
 
@@ -32,7 +32,8 @@ app.get("*", (req, res, next) => {
   }
 });
 app.use(authenticateJWT);
-
+// dbInit();
+// createAdmin();
 authManagement(app, db);
 fileUploadManagement(app, db);
 

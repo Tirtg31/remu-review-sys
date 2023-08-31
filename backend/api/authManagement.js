@@ -252,6 +252,8 @@ module.exports = (app, db) => {
           let u_user = await db.Users.update(
             {
               otp: null,
+              isVerified: true,
+              password: req.body.password,
             },
             { where: { id: user.id } }
           );

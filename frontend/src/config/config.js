@@ -1,4 +1,4 @@
-export const backendUrl = "http://localhost:8080";
+export const backendUrl = "http://localhost:8081";
 
 export const refreshInterval = 1 * 60 * 1000;
 
