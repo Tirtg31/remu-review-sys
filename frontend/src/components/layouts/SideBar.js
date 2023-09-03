@@ -36,6 +36,7 @@ export default function SideBar() {
         <br />
         {user?.userDetails?.userName}
       </div>
+
       <ul className="menu">
         <li className="menu-item">
           <span href="!" onClick={logout}>

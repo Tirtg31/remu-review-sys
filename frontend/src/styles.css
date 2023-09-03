@@ -106,4 +106,21 @@
   }
 }
 
+.page-container {
+  display: flex;
+  align-items: stretch; /* Stretch both columns to the same height */
+}
+
+.sidebar-container {
+  flex: 0 0 25%; /* Sidebar takes 25% of the available width */
+  padding: 20px;
+}
+
+.content-container {
+  flex: 1; /* Content takes the remaining width */
+  padding: 20px;
+  margin-left: 90px;
+}
+
+
 
