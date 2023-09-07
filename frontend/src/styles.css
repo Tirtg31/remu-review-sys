@@ -119,7 +119,8 @@
 .content-container {
   flex: 1; /* Content takes the remaining width */
   padding: 20px;
-  margin-left: 90px;
+
+
 }
 
 

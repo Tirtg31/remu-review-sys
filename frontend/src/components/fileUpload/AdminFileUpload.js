@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import SideBar from "../layouts/SideBar";
+import axios from "axios";
 
 class AdminFileUpload extends Component {
-  state = {};
+  state = {
+    selectedFile: null,
+  };
 
   handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -10,15 +13,25 @@ class AdminFileUpload extends Component {
   };
 
   handleUpload = () => {
-    // Handle file upload logic
     const { selectedFile } = this.state;
-    if (selectedFile) {
-      // Temporary alert
-      alert("Selected file:", selectedFile);
+
+    if (this.state.selectedFile) {
+      try {
+        const formData = new FormData();
+        formData.append("file", this.state.selectedFile);
+
+        axios.post("http://localhost:3000/upload/admin", formData);
+
+        alert("Excel uploaded successfully");
+      } catch (error) {
+        console.error("Error uploading Excel:", error);
+        alert("Error uploading Excel: " + error.message);
+      }
+    } else {
+      alert("Please select a file to upload.");
     }
   };
 
-  // Design
   render() {
     return (
       <div className="page-container">
