@@ -13,7 +13,7 @@ function AdminFileUpload() {
       if (fileName.endsWith(".xlsx") || fileName.endsWith(".xlsm")) {
         setFile(file);
       } else {
-        alert("Please select a valid Excel (.xlsx) file.");
+        alert("Please select a valid Excel (.xlsx/.xlsm) file.");
 
         event.target.value = null;
         setFile(null);
@@ -27,17 +27,16 @@ function AdminFileUpload() {
     }
 
     //  Uploading the file using the fetch API to the server
-    fetch("http://localhost:8000/upload/admin", {
+    fetch("http://localhost:8081/upload/admin", {
       method: "POST",
       body: file,
-      //  Set headers manually for single file upload
       headers: {
         "content-type": file.type,
-        "content-length": `${file.size}`, // Headers need to be a string
+        "content-length": `${file.size}`,
       },
     })
       .then((res) => res.json())
-      .then((data) => alert(data))
+      .then((data) => alert("File has been successfully uploaded"))
       .catch((err) => alert(err));
   };
 
