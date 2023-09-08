@@ -1,70 +1,77 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import SideBar from "../layouts/SideBar";
-import axios from "axios";
 
-class AdminFileUpload extends Component {
-  state = {
-    selectedFile: null,
-  };
+function AdminFileUpload() {
+  const [file, setFile] = useState();
 
-  handleFileChange = (e) => {
-    const file = e.target.files[0];
-    this.setState({ selectedFile: file });
-  };
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
+    const file = event.target.files[0];
+    if (file) {
+      const fileName = file.name.toLowerCase();
+      // Check if the file has a .xlsx or .xlsm extension
+      if (fileName.endsWith(".xlsx") || fileName.endsWith(".xlsm")) {
+        setFile(file);
+      } else {
+        alert("Please select a valid Excel (.xlsx) file.");
 
-  handleUpload = () => {
-    const { selectedFile } = this.state;
-
-    if (this.state.selectedFile) {
-      try {
-        const formData = new FormData();
-        formData.append("file", this.state.selectedFile);
-
-        axios.post("http://localhost:3000/upload/admin", formData);
-
-        alert("Excel uploaded successfully");
-      } catch (error) {
-        console.error("Error uploading Excel:", error);
-        alert("Error uploading Excel: " + error.message);
+        event.target.value = null;
+        setFile(null);
       }
-    } else {
-      alert("Please select a file to upload.");
     }
   };
 
-  render() {
-    return (
-      <div className="page-container">
-        <SideBar />
-        <div className="login-container">
-          <div className="signin z-depth-3">
-            <div className="row">
-              <h5>File Upload</h5>
+  const handleUpload = () => {
+    if (!file) {
+      return;
+    }
 
-              <form className="col s12">
-                <div class="file-field input-field">
-                  <div class="btn">
-                    <span>File</span>
-                    <input type="file" onChange={this.handleFileChange} />
-                  </div>
-                  <div class="file-path-wrapper">
-                    <input class="file-path validate" type="text" />
-                  </div>
+    // 👇 Uploading the file using the fetch API to the server
+    fetch("http://localhost:8000/upload/admin", {
+      method: "POST",
+      body: file,
+      // 👇 Set headers manually for single file upload
+      headers: {
+        "content-type": file.type,
+        "content-length": `${file.size}`, // 👈 Headers need to be a string
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => alert(data))
+      .catch((err) => alert(err));
+  };
+
+  return (
+    <div className="page-container">
+      <SideBar />
+      <div className="login-container">
+        <div className="signin z-depth-3">
+          <div className="row">
+            <h5>File Upload</h5>
+
+            <form className="col s12">
+              <div class="file-field input-field">
+                <div class="btn">
+                  <span>File</span>
+                  <input type="file" onChange={handleFileChange} />
                 </div>
+                <div class="file-path-wrapper">
+                  <input class="file-path validate" type="text" />
+                </div>
+              </div>
 
-                <button
-                  className="btn waves-effect waves-light "
-                  type="submit"
-                  onClick={this.handleUpload}
-                >
-                  Upload
-                </button>
-              </form>
-            </div>
+              <button
+                className="btn waves-effect waves-light "
+                type="submit"
+                onClick={handleUpload}
+              >
+                Upload
+              </button>
+            </form>
           </div>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 export default AdminFileUpload;
