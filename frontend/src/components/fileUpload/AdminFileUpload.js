@@ -26,14 +26,14 @@ function AdminFileUpload() {
       return;
     }
 
-    // 👇 Uploading the file using the fetch API to the server
+    //  Uploading the file using the fetch API to the server
     fetch("http://localhost:8000/upload/admin", {
       method: "POST",
       body: file,
-      // 👇 Set headers manually for single file upload
+      //  Set headers manually for single file upload
       headers: {
         "content-type": file.type,
-        "content-length": `${file.size}`, // 👈 Headers need to be a string
+        "content-length": `${file.size}`, // Headers need to be a string
       },
     })
       .then((res) => res.json())
